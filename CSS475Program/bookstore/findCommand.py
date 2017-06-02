@@ -58,6 +58,10 @@ def __findBooks(cursor):
 
 	cursor.execute(query)
 
+	print('')
+	print('')
+	print('')
+	print('search results:')
 	matches = cursor.fetchall()
 	for match in matches:
 		print('ISBN: ' + str(match[0]))
