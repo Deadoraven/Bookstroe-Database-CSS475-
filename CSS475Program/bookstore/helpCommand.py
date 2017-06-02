@@ -1,0 +1,45 @@
+import sqlite3
+
+# this dictionary is accessed by the help command. It requires a very strict structure where each entry looks like the example below:
+# 'help_page_name' : {'summary' : 'give summary here', 'details' : 'provide details here'} note: summary and details need to be their names verbatim
+help_dict = {
+    'help' : {'summary': 'displays this help', 'details' :
+        'if typed as just \'help\' prints a general summary of all commands. if typed as \'help command\' displays help specific to the command typed in.'},
+    
+    'add' : {'summary': 'adds an item of the type given as the first argument to the database with an interactive prompt', 'details' :
+        '''adds an item of the type given as the first argument to the database with an interactive prompt. Specific things that can added: book, book instance, customer, store, publisher, author, review.
+Make sure to have the necessary id\'s to run the command. See \'find\''''},
+    
+    'remove' : {'summary': 'removes something from the database given a key', 'details':
+        '''add help'''},
+    
+    'find' : {'summary': 'finds the key of something from the database given details from an interactive prompt.', 'details':
+        '''finds the key of something from the database given details from an interactive prompt. Specific things that can found: book, book instance, customer, store, publisher, author, review.'''},
+    
+    'exit' : {'summary': 'exits the program', 'details':
+        '''exits the program'''},
+    
+    'quit' : {'summary': 'exits the program', 'details':
+        '''exits the program'''}
+}
+
+# returns a string with space padding it so the new stringg is the desired length. If str length is already equal or larger then this just returns the passed in string
+def padString(str, length):
+    diff = length - len(str)
+    if(diff > 0):
+        return str + ' ' * diff
+    else:
+        return str
+
+# prints out generic help or help on a specific command if this is given an argument
+def helpCommand(args, connection):
+    if(len(args) > 1):
+        try:
+            help_string = help_dict[args[1]]
+            print(help_string['details'])
+        except KeyError:
+            print('no help page for \'' + args[1] + '\'.')
+    else:
+        for key, value in help_dict.items():
+            print(padString(key, 10) + ' : ' + value['summary'])
+            
