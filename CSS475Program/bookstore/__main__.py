@@ -28,6 +28,9 @@ command_dict = {
 while(not exit):
     # get all words passed in by spliting at whitespaces and removing empty strings that result from double whitespaces
     words = [x for x in input('command: ').split() if x != '']
+
+    # ignore empty commands
+    if(len(words) == 0): continue
     command = words[0]
 
 
