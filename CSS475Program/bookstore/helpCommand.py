@@ -5,20 +5,22 @@ import sqlite3
 help_dict = {
     'help' : {'summary': 'displays this help', 'details' :
         'if typed as just \'help\' prints a general summary of all commands. if typed as \'help command\' displays help specific to the command typed in.'},
-    
+
     'add' : {'summary': 'adds an item of the type given as the first argument to the database with an interactive prompt', 'details' :
         '''adds an item of the type given as the first argument to the database with an interactive prompt. Specific things that can added: book, book instance, customer, store, publisher, author, review.
 Make sure to have the necessary id\'s to run the command. See \'find\''''},
-    
+
     'remove' : {'summary': 'removes something from the database given a key', 'details':
         '''add help'''},
-    
+
     'find' : {'summary': 'finds the key of something from the database given details from an interactive prompt.', 'details':
-        '''finds the key of something from the database given details from an interactive prompt. Specific things that can found: book, book instance, customer, store, publisher, author, review.'''},
-    
+        'finds the key of something from the database given details from an interactive prompt. Specific things that can found: books, customers, stores, publishers, authors, reviews. \n\
+    books: returns a list of book instances with useful information such as Price, Location, ISBN and name\n\
+    customers: returns a list of customers with information such as customer id, name, their online cart and previous purchases'},
+
     'exit' : {'summary': 'exits the program', 'details':
         '''exits the program'''},
-    
+
     'quit' : {'summary': 'exits the program', 'details':
         '''exits the program'''}
 }
@@ -42,4 +44,3 @@ def helpCommand(args, connection):
     else:
         for key, value in help_dict.items():
             print(padString(key, 10) + ' : ' + value['summary'])
-            

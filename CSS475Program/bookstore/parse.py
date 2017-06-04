@@ -81,8 +81,9 @@ def getCondition(Q, required=True):
     return None
 
 def getFullName(Q, required=True):
-    fullName = __validateNotNullString(input(Q + ': ').strip(), Q, required).split()
-    fullName = [x for x in fullName if x] # remove empty strings
+    fullName = __validateNotNullString(input(Q + ': ').strip(), Q, required)
+    if(not fullName): return None
+    fullName = [x for x in fullName.split() if x] # remove empty strings
     if(len(fullName) != 2):
         if(required):
             print('error: full name expected (in the form of \'first_name last_name\')')

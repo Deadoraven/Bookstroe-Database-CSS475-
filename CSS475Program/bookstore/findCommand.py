@@ -1,6 +1,20 @@
 import sqlite3
 import parse
 
+# helper to build sql commands.
+# NOT injection safe!!!!!!
+def addCond(total, cond):
+	if(not total):
+		return " WHERE " + cond
+	else:
+		return total + " AND " + cond
+
+# adds single quotation marks around a string if it doesn't have then already
+def stringify(x):
+	if(not x): return ''
+	elif(x[0] == '\''): return x
+	return '\'' + x + '\''
+
 def __findBooks(cursor):
 	print('every one of the following are optional. If you leave them all empty, then all books will be returned')
 
@@ -17,16 +31,6 @@ def __findBooks(cursor):
 	condition = parse.getCondition('condition', False)
 
 	where_clause = ""
-	def addCond(total, cond):
-		if(not total):
-			return " WHERE " + cond
-		else:
-			return total + " AND " + cond
-
-	def stringify(x):
-		if(not x): return ''
-		elif(x[0] == '\''): return x
-		return '\'' + x + '\''
 
 	# note: not safe against SQL injections!
 	if(ISBN):
@@ -78,7 +82,75 @@ def __findBooks(cursor):
 
 
 def __findCustomer(cursor):
-	pass
+	print('every one of the following are optional. If you leave them all empty, then all customers will be returned')
+	customer_id = parse.getInteger('customer id', False)
+	name = parse.getFullName('full name(first_name last_name)', False)
+	email = parse.getNotNullName('email address', False)
+
+	where_clause = ""
+
+	# note: not safe against SQL injections!
+	if(customer_id):
+		where_clause = addCond(where_clause, "customer_id = " + str(customer_id))
+	if(name):
+		where_clause = addCond(where_clause, "FName = " + stringify(name[0]))
+		where_clause = addCond(where_clause, "LName = " + stringify(name[1]))
+	if(email):
+		where_clause = addCond(where_clause, "email_address = " + stringify(email))
+
+	cursor.execute("SELECT * FROM CUSTOMER" + where_clause + ";")
+	print('')
+	print('')
+	print('')
+	print('search results:')
+	matches = cursor.fetchall()
+	for match in matches:
+		print('customer_id: ' + str(match[0]))
+		print('Name: ' + str(match[1]) + ' ' + str(match[2]))
+		print('email address: ' + str(match[3]))
+		print('phone number: ' + str(match[4]))
+		print('billing address: ' + str(match[5]))
+		shipping = match[6] or str(match[5]) # defaults to billing if no shipping specified
+		print('shipping address: ' + shipping)
+		print('*really secure password: ' + str(match[7]))
+
+		# get cart
+		cursor.execute("SELECT Instance_id, Price, Condition, BOOK.ISBN, BOOK.name FROM \
+			BOOK_INSTANCE INNER JOIN BOOK ON BOOK_INSTANCE.ISBN = BOOK.ISBN WHERE BOOK_INSTANCE.Customer_id = ?;", (match[0], ))
+		books = cursor.fetchall()
+		print('')
+		print('current cart:')
+		for book in books:
+			print('book Instance_id: ' + str(book[0]))
+			print('book title: ' + str(book[4]))
+			print('book Price: ' + str(book[1]))
+			print('book Condition: ' + str(book[2]))
+			print('book ISBN: ' + str(book[3]))
+			print('')
+
+
+		# get past orders
+		print('list of previous orders:')
+		cursor.execute("SELECT Order_id, Billing_address, Shipping_address, Order_date FROM \
+			BOOK_ORDER WHERE Customer_id = ?;", (match[0], ))
+		orders = cursor.fetchall()
+		for order in orders:
+			print('order id: ' + str(order[0]))
+			print('order billing address: ' + str(order[1]))
+			print('order shipping address: ' + str(order[2]))
+			print('order date: ' + str(order[3]))
+			print('list of book instance ids, ISBNs, and names:')
+			cursor.execute("SELECT Instance_id, BOOK.ISBN, BOOK.name FROM \
+				BOOK INNER JOIN BOOK_INSTANCE ON BOOK.ISBN = BOOK_INSTANCE.ISBN WHERE Order_id = ?;", (order[0], ))
+			books = cursor.fetchall()
+			for book in books:
+				print(str(book[0]) + ' ' + str(book[1]) + ' ' + str(book[2]))
+
+			print('')
+		print('')
+	print('')
+	print('')
+	print('* okay, the password isn\'t really secure... at all')
 
 def __findStore(cursor):
 	pass
@@ -102,7 +174,7 @@ def findCommand(args, connection):
     c = connection.cursor()
     if(type == 'books'):
         __findBooks(c)
-    elif(type == 'customer'):
+    elif(type == 'customers'):
         __findCustomer(c)
     elif(type == 'store'):
         __findStore(c)
