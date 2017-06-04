@@ -53,7 +53,7 @@ def __findBooks(cursor):
 	if(condition):
 		where_clause = addCond(where_clause, "condition = " + stringify(condition))
 
-	query = "SELECT BOOK.ISBN, Instance_id, Price, Condition, store_id FROM BOOK" +\
+	query = "SELECT BOOK.ISBN, Instance_id, Price, Condition, store_id, BOOK.name FROM BOOK" +\
 		" INNER JOIN BOOK_INSTANCE ON BOOK.ISBN = BOOK_INSTANCE.ISBN" +\
 		where_clause + ";"
 
@@ -69,6 +69,7 @@ def __findBooks(cursor):
 	matches = cursor.fetchall()
 	for match in matches:
 		print('ISBN: ' + str(match[0]))
+		print('name: ' + str(match[5]))
 		print('instance_id: ' + str(match[1]))
 		print('Price: ' + str(match[2]))
 		print('Condition: ' + match[3])
