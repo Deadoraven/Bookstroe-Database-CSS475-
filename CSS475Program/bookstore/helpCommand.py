@@ -18,6 +18,9 @@ Make sure to have the necessary id\'s to run the command. See \'find\''''},
     books: returns a list of book instances with useful information such as Price, Location, ISBN and name\n\
     customers: returns a list of customers with information such as customer id, name, their online cart and previous purchases'},
 
+    'sell' : {'summary': 'sells a book to a customer', 'details':
+        'enters an interactive prompt which requires a customer id and book instance id. The system then moves the book to that customers ownership.'},
+
     'exit' : {'summary': 'exits the program', 'details':
         '''exits the program'''},
 

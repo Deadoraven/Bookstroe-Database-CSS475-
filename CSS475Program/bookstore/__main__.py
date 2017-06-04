@@ -2,6 +2,7 @@ from addCommand import addCommand
 from helpCommand import helpCommand
 from removeCommand import removeCommand
 from findCommand import findCommand
+from sellCommand import sellCommand
 import sqlite3
 
 # connection provides a way to access the database
@@ -22,6 +23,7 @@ command_dict = {
     'quit' : exitCommand,
     'help' : helpCommand,
     'add' : addCommand,
+    'sell' : sellCommand,
     'remove' : removeCommand,
     'find' : findCommand}
 
