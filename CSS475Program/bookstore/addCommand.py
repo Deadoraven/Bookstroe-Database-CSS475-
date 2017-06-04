@@ -37,11 +37,14 @@ def __addBookInstance(cursor):
     book_id = 0
 
     # keep going until the random number does not collide
+    # keeps random numbers as small as possible now
+    max_r = 10
     while(True):
-        book_id = random.randint(0, 1000000000)
+        book_id = random.randint(0, max_r)
         cursor.execute('SELECT Instance_id FROM BOOK_INSTANCE WHERE Instance_id = ?;', (book_id,))
         if(cursor.fetchone() == None): break
-    
+        max_r *= 10
+
     ISBN = parse.getISBN('ISBN')
     if(ISBN == None): return
 
@@ -63,17 +66,20 @@ def __addCustomer(cursor):
     customer_id = 0
 
     # keep going until the random number does not collide
+    # keeps random numbers as small as possible now
+    max_r = 10
     while(True):
-        customer_id = random.randint(0, 1000000000)
+        customer_id = random.randint(0, max_r)
         cursor.execute('SELECT Customer_id FROM CUSTOMER WHERE Customer_id = ?;', (customer_id,))
         if(cursor.fetchone() == None): break
-    
+        max_r *= 10
+
     fullName = parse.getFullName('full name(first_name last_name)')
     if(fullName == None): return
-    
+
     email = parse.getNotNullName('email address')
     if(email == None): return
-    
+
     phone = parse.getInteger('phone number(type 0 if none)')
     if(phone == None): return
     if(phone == 0): phone = None
@@ -93,14 +99,17 @@ def __addStore(cursor):
     store_id = 0
 
     # keep going until the random number does not collide
+    # keeps random numbers as small as possible now
+    max_r = 10
     while(True):
-        store_id = random.randint(0, 1000000000)
+        store_id = random.randint(0, max_r)
         cursor.execute('SELECT Store_id FROM STORE WHERE Store_id = ?;', (store_id,))
         if(cursor.fetchone() == None): break
+        max_r *= 10
 
     name = parse.getNotNullName('store name')
     if(name == None): return
-    
+
     address = parse.getNotNullName('store address')
     if(address == None): return
 
@@ -111,21 +120,24 @@ def __addPublisher(cursor):
     publisher_id = 0
 
     # keep going until the random number does not collide
+    # keeps random numbers as small as possible now
+    max_r = 10
     while(True):
-        publisher_id = random.randint(0, 1000000000)
+        publisher_id = random.randint(0, max_r)
         cursor.execute('SELECT Publisher_id FROM PUBLISHER WHERE Publisher_id = ?;', (publisher_id,))
         if(cursor.fetchone() == None): break
+        max_r *= 10
 
     name = parse.getNotNullName('publisher name')
     if(name == None): return
-    
+
     address = parse.getNotNullName('publisher address')
     if(address == None): return
 
     phone = parse.getInteger('phone number(type 0 if none)')
     if(phone == None): return
     if(phone == 0): phone = None
-    
+
 
     cursor.execute("INSERT INTO PUBLISHER VALUES(?, ?, ?, ?);", (publisher_id, address, phone, name))
 
@@ -134,10 +146,13 @@ def __addAuthor(cursor):
     author_id = 0
 
     # keep going until the random number does not collide
+    # keeps random numbers as small as possible now
+    max_r = 10
     while(True):
-        publisher_id = random.randint(0, 1000000000)
+        publisher_id = random.randint(0, max_r)
         cursor.execute('SELECT author_id FROM AUTHOR WHERE author_id = ?;', (author_id,))
         if(cursor.fetchone() == None): break
+        max_r *= 10
 
     name = parse.getNotNullName('author name')
     if(name == None): return
@@ -164,7 +179,7 @@ def __addReview(cursor):
 
     cursor.execute("INSERT INTO REVIEW VALUES(?, ?, ?, ?);", (content, rating, ISBN, customer_id))
 
-    
+
 
 
 
@@ -196,4 +211,3 @@ def addCommand(args, connection):
         return # prevent worthless commit
 
     connection.commit()
-        
