@@ -13,12 +13,21 @@ def __removeBook(cursor):
         print('succesfully deleted book instance from the system')
     
     
-def __removeStore(cursor):
-    pass
     
     
 def __removeReview(cursor):
-    pass
+    reviewer_id = parse.getInteger('reviewer(customer) id')
+    if(reviewer_id == None): return
+    
+    ISBN = parse.getInteger('reviewed book ISBN')
+    if(ISBN == None): return
+    
+    cursor.execute('DELETE FROM REVIEW WHERE customer_id = ? AND ISBN = ?;', (reviewer_id, ISBN))
+    
+    if(cursor.rowcount == 0):
+        print('review with inputed id and ISBN could not be found(and thus could not be deleted)')
+    else:
+        print('succesfully deleted review from the system')
     
 
 def removeCommand(args, connection):
@@ -34,12 +43,10 @@ def removeCommand(args, connection):
         else:
             print('can only remove book instance')
             return # prevent worthless commit
-    elif(type == 'store'):
-        __removeStore(c)
     elif(type == 'review'):
         __removeReview(c)
     else:
-        print('cannot rmove a \'' + type + '\' because that type is not known. For help type \'help remove\'')
+        print('cannot remove a \'' + type + '\' because that type is not known. For help type \'help remove\'')
         return # prevent worthless commit
 
     connection.commit()
