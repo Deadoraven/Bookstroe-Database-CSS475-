@@ -46,5 +46,11 @@ def helpCommand(args, connection):
         except KeyError:
             print('no help page for \'' + args[1] + '\'.')
     else:
+        print('this is help from the bookstore application.')
+        print('one note is that this application does not handle errors well right now. It will do one of two things:')
+        print('    silently ignore the error(when you would like to know you typed a name into the number field!)')
+        print('    report the error and exit(when you want to keep going!)')
+        print('')
+        print('below are a list of commands:')
         for key, value in help_dict.items():
             print(padString(key, 10) + ' : ' + value['summary'])
