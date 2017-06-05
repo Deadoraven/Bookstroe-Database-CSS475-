@@ -153,9 +153,6 @@ def __findCustomer(cursor):
 	print('')
 	print('* okay, the password isn\'t really secure... at all')
 
-def __findStore(cursor):
-	pass
-
 def __findPublisher(cursor):
 	pass
 
@@ -179,8 +176,6 @@ def findCommand(args, connection):
         __findCustomer(c)
     elif(type == 'store'):
         __findStore(c)
-    elif(type == 'publisher'):
-        __findPublisher(c)
     elif(type == 'author'):
         __findAuthor(c)
     elif(type == 'review'):

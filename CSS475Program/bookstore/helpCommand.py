@@ -14,7 +14,7 @@ Make sure to have the necessary id\'s to run the command. See \'find\''''},
         '''add help'''},
 
     'find' : {'summary': 'finds the key of something from the database given details from an interactive prompt.', 'details':
-        'finds the key of something from the database given details from an interactive prompt. Specific things that can found: books, customers, stores, publishers, authors, reviews. \n\
+        'finds the key of something from the database given details from an interactive prompt. Specific things that can found: books, customers, publishers, authors, reviews. \n\
     books: returns a list of book instances with useful information such as Price, Location, ISBN and name\n\
     customers: returns a list of customers with information such as customer id, name, their online cart and previous purchases'},
 
