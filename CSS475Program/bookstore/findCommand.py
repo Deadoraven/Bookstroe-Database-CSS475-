@@ -21,7 +21,7 @@ def __findBooks(cursor):
 	ISBN = parse.getISBN('ISBN', False)
 	name = parse.getNotNullName('book name', False)
 	genre = parse.getNotNullName('genre', False)
-	publisher_id = parse.getInteger('publisher id', False)
+	Publisher_id = parse.getInteger('Publisher id', False)
 	difficulty = parse.getReadingDifficulty('reading difficulty', False)
 	#unsure of how to handle author_ids
 	#author_ids = parse.getIntegerList('author list(space separated integer ids)', False)
@@ -39,8 +39,8 @@ def __findBooks(cursor):
 		where_clause = addCond(where_clause, "Name = " + stringify(name))
 	if(genre):
 		where_clause = addCond(where_clause, "Genre = " + stringify(genre))
-	if(publisher_id):
-		where_clause = addCond(where_clause, "publisher_id = " + str(publisher_id))
+	if(Publisher_id):
+		where_clause = addCond(where_clause, "Publisher_id = " + str(Publisher_id))
 	if(difficulty):
 		where_clause = addCond(where_clause, "Reading_difficulty = " + stringify(difficulty))
 
@@ -154,10 +154,69 @@ def __findCustomer(cursor):
 	print('* okay, the password isn\'t really secure... at all')
 
 def __findPublisher(cursor):
-	pass
+
+	print('every one of the following are optional. If you leave them all empty, then all customers will be returned')
+	publisher_id = parse.getInteger('Publisher id', False)
+	name = parse.getFullName('Publisher\'s name', False)
+	address = parse.getNotNullName('Publisher\'s address', False)
+	phone = parse.getInteger('Publisher\'s phone number' ,False)
+
+	where_clause = ""
+
+	# note: not safe against SQL injections!
+	if(publisher_id):
+		where_clause = addCond(where_clause, "Publisher_id = " + str(Publisher_id))
+	if(name):
+		where_clause = addCond(where_clause, "Pulisher name = " + stringify(name))
+	if(address):
+		where_clause = addCond(where_clause, "Publisher address = " + stringify(address)
+	if(phone):
+		where_clause = addCond(where_clause, "Publisher phone number = " + stringify(phone))
+
+	cursor.execute("SELECT * FROM PUBLISHER" + where_clause + ";")
+	print('')
+	print('')
+	print('search results:')
+	matches = cursor.fetchall()
+	for match in matches:
+		print('Publisher id: ' + str(match[0]))
+		print('Publisher\'s name: ' + str(match[1])
+		print('Publisher\'s address: ' + str(match[3]))
+		print('Publisher\'s phone number: ' + str(match[4]))
+		print('')
+	print('')
 
 def __findAuthor(cursor):
-	pass
+	print('every one of the following are optional. If you leave them all empty, then all customers will be returned')
+	author_id = parse.getInteger('Author\'s id', False)
+	name = parse.getFullName('Author\'s name', False)
+	biography = parse.getNotNullName('Author\'s address', False)
+	publisher = parse.getInteger('Author\'s Publisher id' ,False)
+
+	where_clause = ""
+
+	# note: not safe against SQL injections!
+	if(author_id):
+		where_clause = addCond(where_clause, "Author\'s_id = " + str(author_id))
+	if(name):
+		where_clause = addCond(where_clause, "Author\'s name = " + stringify(name))
+	if(biography):
+		where_clause = addCond(where_clause, "Author\'s address = " + stringify(biography)
+	if(publisher):
+		where_clause = addCond(where_clause, "Author\'s phone number = " + stringify(publisher))
+
+	cursor.execute("SELECT * FROM AUTHOR" + where_clause + ";")
+	print('')
+	print('')
+	print('search results:')
+	matches = cursor.fetchall()
+	for match in matches:
+		print('Author\'s id: ' + str(match[0]))
+		print('Author\'s name: ' + str(match[1])
+		print('Author\'s biography: ' + str(match[3]))
+		print('Author\'s Publisher id: ' + str(match[4]))
+		print('')
+	print('')
 
 def __findReview(cursor):
 	print('every one of the following are optional. If you leave them all empty, then all reviews will be returned.')
@@ -165,10 +224,10 @@ def __findReview(cursor):
 	customer_id = parse.getInteger('reviewer id', False)
 	customer_name = parse.getFullName('reviewer full name(first_name last_name)', False)
 	email = parse.getNotNullName('reviewer email address', False)
-	
+
 	ISBN = parse.getNotNullName('book ISBN', False)
 	book_name = parse.getNotNullName('book title', False)
-	
+
 	where_clause = ""
 	# note: not safe against SQL injections!
 	if(customer_id):
@@ -178,12 +237,12 @@ def __findReview(cursor):
 		where_clause = addCond(where_clause, "C.LName = " + stringify(customer_name[1]))
 	if(email):
 		where_clause = addCond(where_clause, "C.email_address = " + stringify(email))
-		
+
 	if(ISBN):
 		where_clause = addCond(where_clause, "B.ISBN = " + str(ISBN))
 	if(book_name):
 		where_clause = addCond(where_clause, "B.Name = " + stringify(book_name))
-	
+
 	cursor.execute('SELECT C.customer_id, C.Fname, C.Lname, B.ISBN, B.name, R.Rating, R.content FROM \
 		REVIEW AS R INNER JOIN CUSTOMER AS C ON R.customer_id = C.customer_id\
 		INNER JOIN BOOK AS B ON R.ISBN = B.ISBN' + where_clause + ' ORDER BY R.customer_id;')
@@ -201,7 +260,7 @@ def __findReview(cursor):
 		print('review content: ' + str(r[6]))
 		print('review rating: ' + str(r[5]))
 		print('')
-	
+
 
 def findCommand(args, connection):
     if(len(args) < 2):
