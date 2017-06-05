@@ -128,8 +128,7 @@ def __addPublisher(cursor):
         if(cursor.fetchone() == None): break
         max_r *= 10
 
-    name = parse.getNotNullName('publisher name')
-    if(name == None): return
+
 
     address = parse.getNotNullName('publisher address')
     if(address == None): return
@@ -138,6 +137,8 @@ def __addPublisher(cursor):
     if(phone == None): return
     if(phone == 0): phone = None
 
+    name = parse.getNotNullName('publisher name')
+    if(name == None): return
 
     cursor.execute("INSERT INTO PUBLISHER VALUES(?, ?, ?, ?);", (publisher_id, address, phone, name))
 
