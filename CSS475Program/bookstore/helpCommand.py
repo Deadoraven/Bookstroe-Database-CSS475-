@@ -21,6 +21,8 @@ Make sure to have the necessary id\'s to run the command. See \'find\''''},
 
     'sell' : {'summary': 'sells a book to a customer', 'details':
         'enters an interactive prompt which requires a customer id and book instance id. The system then moves the book to that customers ownership.'},
+    
+    'QA' : {'summary': 'prints some questions and their answer', 'details':'prints some questions and their answer'},
 
     'exit' : {'summary': 'exits the program', 'details':
         '''exits the program'''},
