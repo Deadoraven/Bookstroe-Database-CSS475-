@@ -157,25 +157,20 @@ def __findPublisher(cursor):
 
 	print('every one of the following are optional. If you leave them all empty, then all customers will be returned')
 	publisher_id = parse.getInteger('Publisher id', False)
-	name = parse.getFullName('Publisher\'s name', False)
+	name = parse.getNotNullName('Publisher\'s name', False)
 	address = parse.getNotNullName('Publisher\'s address', False)
 	phone = parse.getInteger('Publisher\'s phone number' ,False)
 
 	where_clause = ""
-
 	# note: not safe against SQL injections!
 	if(publisher_id):
-		print('im in')
-		where_clause = addCond(where_clause, "Publisher_id = " + str(Publisher_id))
+		where_clause = addCond(where_clause, "publisher_id = " + str(publisher_id))
 	if(name):
-		print('im in')
-		where_clause = addCond(where_clause, "Name = " + stringify(name))
-
+		where_clause = addCond(where_clause, "name = " + stringify(name))
 	if(address):
-		print('im in')
-		where_clause = addCond(where_clause, "Address = " + stringify(address))
+		where_clause = addCond(where_clause, "address = " + stringify(address))
 	if(phone):
-		where_clause = addCond(where_clause, "Phone = " + stringify(phone))
+		where_clause = addCond(where_clause, "phone = " + str(phone))
 
 
 	cursor.execute("SELECT * FROM PUBLISHER" + where_clause + ";")
@@ -196,22 +191,18 @@ def __findAuthor(cursor):
 	author_id = parse.getInteger('Author\'s id', False)
 	name = parse.getNotNullName('Author\'s name', False)
 	biography = parse.getNotNullName('Author\'s address', False)
-	publisher = parse.getInteger('Author\'s Publisher id' ,False)
 
 	where_clause = ""
 
 	# note: not safe against SQL injections!
 	if(author_id):
-		where_clause = addCond(where_clause, "Author\'s_id = " + str(author_id))
+		where_clause = addCond(where_clause, "author_id = " + str(author_id))
 	if(name):
-		where_clause = addCond(where_clause, "Author\'s name = " + stringify(name))
+		where_clause = addCond(where_clause, "name = " + stringify(name))
 	if(biography):
-		where_clause = addCond(where_clause, "Author\'s address = " + stringify(biography))
-	if(publisher):
-		where_clause = addCond(where_clause, "Author\'s phone number = " + stringify(publisher))
+		where_clause = addCond(where_clause, "biography= " + stringify(biography))
 
-	if (author_id and name and biography and publisher):
-		cursor.execute("SELECT * FROM AUTHOR" + where_clause + ";")
+	cursor.execute("SELECT * FROM AUTHOR" + where_clause + ";")
 	print('')
 	print('')
 	print('search results:')

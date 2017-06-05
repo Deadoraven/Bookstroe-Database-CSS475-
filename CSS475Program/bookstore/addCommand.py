@@ -150,7 +150,7 @@ def __addAuthor(cursor):
     # keeps random numbers as small as possible now
     max_r = 10
     while(True):
-        publisher_id = random.randint(0, max_r)
+        author_id = random.randint(0, max_r)
         cursor.execute('SELECT author_id FROM AUTHOR WHERE author_id = ?;', (author_id,))
         if(cursor.fetchone() == None): break
         max_r *= 10
