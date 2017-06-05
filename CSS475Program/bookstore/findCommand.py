@@ -165,13 +165,18 @@ def __findPublisher(cursor):
 
 	# note: not safe against SQL injections!
 	if(publisher_id):
+		print('im in')
 		where_clause = addCond(where_clause, "Publisher_id = " + str(Publisher_id))
 	if(name):
-		where_clause = addCond(where_clause, "Pulisher name = " + stringify(name))
+		print('im in')
+		where_clause = addCond(where_clause, "Name = " + stringify(name))
+
 	if(address):
-		where_clause = addCond(where_clause, "Publisher address = " + stringify(address))
+		print('im in')
+		where_clause = addCond(where_clause, "Address = " + stringify(address))
 	if(phone):
-		where_clause = addCond(where_clause, "Publisher phone number = " + stringify(phone))
+		where_clause = addCond(where_clause, "Phone = " + stringify(phone))
+
 
 	cursor.execute("SELECT * FROM PUBLISHER" + where_clause + ";")
 	print('')
@@ -180,16 +185,16 @@ def __findPublisher(cursor):
 	matches = cursor.fetchall()
 	for match in matches:
 		print('Publisher id: ' + str(match[0]))
-		print('Publisher\'s name: ' + str(match[1]))
-		print('Publisher\'s address: ' + str(match[3]))
-		print('Publisher\'s phone number: ' + str(match[4]))
+		print('Publisher\'s name: ' + str(match[3]))
+		print('Publisher\'s address: ' + str(match[2]))
+		print('Publisher\'s phone number: ' + str(match[1]))
 		print('')
 	print('')
 
 def __findAuthor(cursor):
 	print('every one of the following are optional. If you leave them all empty, then all customers will be returned')
 	author_id = parse.getInteger('Author\'s id', False)
-	name = parse.getFullName('Author\'s name', False)
+	name = parse.getNotNullName('Author\'s name', False)
 	biography = parse.getNotNullName('Author\'s address', False)
 	publisher = parse.getInteger('Author\'s Publisher id' ,False)
 
@@ -205,7 +210,8 @@ def __findAuthor(cursor):
 	if(publisher):
 		where_clause = addCond(where_clause, "Author\'s phone number = " + stringify(publisher))
 
-	cursor.execute("SELECT * FROM AUTHOR" + where_clause + ";")
+	if (author_id and name and biography and publisher):
+		cursor.execute("SELECT * FROM AUTHOR" + where_clause + ";")
 	print('')
 	print('')
 	print('search results:')
@@ -213,8 +219,7 @@ def __findAuthor(cursor):
 	for match in matches:
 		print('Author\'s id: ' + str(match[0]))
 		print('Author\'s name: ' + str(match[1]))
-		print('Author\'s biography: ' + str(match[3]))
-		print('Author\'s Publisher id: ' + str(match[4]))
+		print('Author\'s biography: ' + str(match[2]))
 		print('')
 	print('')
 
@@ -273,10 +278,10 @@ def findCommand(args, connection):
         __findBooks(c)
     elif(type == 'customers'):
         __findCustomer(c)
+    elif(type == 'publisher'):
+        __findPublisher(c)
     elif(type == 'store'):
         __findStore(c)
-	elif(type == 'publisher')
-		__findPublisher(c)
     elif(type == 'author'):
         __findAuthor(c)
     elif(type == 'reviews'):
