@@ -48,4 +48,5 @@ def sellCommand(args, connection):
     
     cursor.execute('UPDATE BOOK_INSTANCE SET Order_id = ? WHERE instance_id = ?;', (order_id, instance_id))
     print('succesfully sold the book \'' + book[1] + '\' to customer ' + str(customer[0]) + ' ' + str(customer[1]))
+    connection.commit()
     
