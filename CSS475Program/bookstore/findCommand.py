@@ -169,7 +169,7 @@ def __findPublisher(cursor):
 	if(name):
 		where_clause = addCond(where_clause, "Pulisher name = " + stringify(name))
 	if(address):
-		where_clause = addCond(where_clause, "Publisher address = " + stringify(address)
+		where_clause = addCond(where_clause, "Publisher address = " + stringify(address))
 	if(phone):
 		where_clause = addCond(where_clause, "Publisher phone number = " + stringify(phone))
 
@@ -180,7 +180,7 @@ def __findPublisher(cursor):
 	matches = cursor.fetchall()
 	for match in matches:
 		print('Publisher id: ' + str(match[0]))
-		print('Publisher\'s name: ' + str(match[1])
+		print('Publisher\'s name: ' + str(match[1]))
 		print('Publisher\'s address: ' + str(match[3]))
 		print('Publisher\'s phone number: ' + str(match[4]))
 		print('')
@@ -201,7 +201,7 @@ def __findAuthor(cursor):
 	if(name):
 		where_clause = addCond(where_clause, "Author\'s name = " + stringify(name))
 	if(biography):
-		where_clause = addCond(where_clause, "Author\'s address = " + stringify(biography)
+		where_clause = addCond(where_clause, "Author\'s address = " + stringify(biography))
 	if(publisher):
 		where_clause = addCond(where_clause, "Author\'s phone number = " + stringify(publisher))
 
@@ -212,7 +212,7 @@ def __findAuthor(cursor):
 	matches = cursor.fetchall()
 	for match in matches:
 		print('Author\'s id: ' + str(match[0]))
-		print('Author\'s name: ' + str(match[1])
+		print('Author\'s name: ' + str(match[1]))
 		print('Author\'s biography: ' + str(match[3]))
 		print('Author\'s Publisher id: ' + str(match[4]))
 		print('')
@@ -275,6 +275,8 @@ def findCommand(args, connection):
         __findCustomer(c)
     elif(type == 'store'):
         __findStore(c)
+	elif(type == 'publisher')
+		__findPublisher(c)
     elif(type == 'author'):
         __findAuthor(c)
     elif(type == 'reviews'):
