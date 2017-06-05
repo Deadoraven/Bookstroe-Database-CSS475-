@@ -16,7 +16,8 @@ Make sure to have the necessary id\'s to run the command. See \'find\''''},
     'find' : {'summary': 'finds the key of something from the database given details from an interactive prompt.', 'details':
         'finds the key of something from the database given details from an interactive prompt. Specific things that can found: books, customers, publishers, authors, reviews. \n\
     books: returns a list of book instances with useful information such as Price, Location, ISBN and name\n\
-    customers: returns a list of customers with information such as customer id, name, their online cart and previous purchases'},
+    customers: returns a list of customers with information such as customer id, name, their online cart and previous purchases\n\
+    reviews: returns a list of reviews with information such as who wrote it, its content, the book it was for and the rating'},
 
     'sell' : {'summary': 'sells a book to a customer', 'details':
         'enters an interactive prompt which requires a customer id and book instance id. The system then moves the book to that customers ownership.'},

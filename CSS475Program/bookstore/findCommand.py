@@ -160,8 +160,48 @@ def __findAuthor(cursor):
 	pass
 
 def __findReview(cursor):
-	pass
+	print('every one of the following are optional. If you leave them all empty, then all reviews will be returned.')
+	print('Reviews are sorted by reviewer. reviewer is the customer who wrote the review')
+	customer_id = parse.getInteger('reviewer id', False)
+	customer_name = parse.getFullName('reviewer full name(first_name last_name)', False)
+	email = parse.getNotNullName('reviewer email address', False)
+	
+	ISBN = parse.getNotNullName('book ISBN', False)
+	book_name = parse.getNotNullName('book title', False)
+	
+	where_clause = ""
+	# note: not safe against SQL injections!
+	if(customer_id):
+		where_clause = addCond(where_clause, "C.customer_id = " + str(customer_id))
+	if(customer_name):
+		where_clause = addCond(where_clause, "C.FName = " + stringify(customer_name[0]))
+		where_clause = addCond(where_clause, "C.LName = " + stringify(customer_name[1]))
+	if(email):
+		where_clause = addCond(where_clause, "C.email_address = " + stringify(email))
+		
+	if(ISBN):
+		where_clause = addCond(where_clause, "B.ISBN = " + str(ISBN))
+	if(book_name):
+		where_clause = addCond(where_clause, "B.Name = " + stringify(book_name))
+	
+	cursor.execute('SELECT C.customer_id, C.Fname, C.Lname, B.ISBN, B.name, R.Rating, R.content FROM \
+		REVIEW AS R INNER JOIN CUSTOMER AS C ON R.customer_id = C.customer_id\
+		INNER JOIN BOOK AS B ON R.ISBN = B.ISBN' + where_clause + ' ORDER BY R.customer_id;')
 
+	print('')
+	print('')
+	print('')
+	print('search results:')
+	reviews = cursor.fetchall()
+	for r in reviews:
+		print('customer id: ' + str(r[0]))
+		print('customer name: ' + str(r[1]) + ' ' + str(r[2]))
+		print('book ISBN: ' + str(r[3]))
+		print('book name: ' + str(r[4]))
+		print('review content: ' + str(r[6]))
+		print('review rating: ' + str(r[5]))
+		print('')
+	
 
 def findCommand(args, connection):
     if(len(args) < 2):
@@ -178,7 +218,7 @@ def findCommand(args, connection):
         __findStore(c)
     elif(type == 'author'):
         __findAuthor(c)
-    elif(type == 'review'):
+    elif(type == 'reviews'):
         __findReview(c)
     else:
         print('cannot find a \'' + type + '\' because that type is not known. For help type \'help find\'')
